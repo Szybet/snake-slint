@@ -1,0 +1,65 @@
+import { Button, VerticalBox , AboutSlint } from "std-widgets.slint";
+
+struct Size {
+    width: int,
+    height: int}
+
+export global GameAdapter {
+    in property <Size> grid_size;
+    in property <[[color]]> block_colors;
+    in property <length> block_border_width;
+    in property <color> block_border_color;
+    // Text
+    in property <string> overlay_text;
+    in property <bool> overlay_visible;
+}
+
+component GridBlockDisplay inherits VerticalLayout {
+    in property <Size> grid_size;
+    in property <[[color]]> block_colors;
+    in property <length> block_border_width;
+    in property <color> block_border_color;
+
+    for y in grid-size.height: HorizontalLayout {
+        for x in grid-size.width: Rectangle {
+            background: block_colors[x][y];
+            border-width: block_border_width;
+            border-color: block_border_color;
+        }
+    }
+}
+
+export component AppWindow inherits Window {
+    callback key_pressed(string);
+    forward-focus: my-key-handler;
+    my-key-handler := FocusScope {
+        key-pressed(event) => {
+            root.key_pressed(event.text);
+            accept
+        }
+    }
+
+    GridBlockDisplay {
+        grid_size <=> GameAdapter.grid_size;
+        block_colors <=> GameAdapter.block_colors;
+        block_border_width <=> GameAdapter.block_border_width;
+        block_border_color <=> GameAdapter.block_border_color;
+    }
+
+    Rectangle {
+        visible: GameAdapter.overlay_visible;
+        background: rgb(0, 0, 0);
+        width: parent.width * 0.2;
+        height: parent.height * 0.05;
+        padding: 8px;
+        border-radius: 5px;
+        Text {
+            visible: GameAdapter.overlay_visible;
+            text: GameAdapter.overlay_text;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+            color: white;
+            font-size: parent.height * 0.3;
+        }
+    }
+}
