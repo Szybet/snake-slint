@@ -22,13 +22,7 @@ pub fn get_snake_app_window() -> AppWindow {
     ui.global::<GameAdapter>().set_grid_size(GRID_SIZE);
 
     // Set grid structure
-    let grid_model = VecModel::default();
-    for _ in 0..GRID_SIZE.height as usize {
-        let row_model = VecModel::from(vec![BLOCK_COLOR_UNUSED; GRID_SIZE.width as usize]);
-        grid_model.push(ModelRc::new(row_model));
-    }
-    ui.global::<GameAdapter>()
-        .set_block_colors(ModelRc::new(grid_model));
+    ui.set_block_color_all(BLOCK_COLOR_UNUSED);
 
     ui.global::<GameAdapter>()
         .set_block_border_width(BLOCK_BORDER_WIDTH);
