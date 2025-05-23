@@ -3,6 +3,8 @@ use slint::{Color, ComponentHandle, Model, ModelRc, VecModel};
 
 use crate::{AppWindow, GameAdapter, consts::GRID_SIZE};
 
+use alloc::vec;
+
 impl AppWindow {
     pub fn set_block_color(&self, x: usize, y: usize, color: Color) {
         let grid = self.global::<GameAdapter>().get_block_colors();

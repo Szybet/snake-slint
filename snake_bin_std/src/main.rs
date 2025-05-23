@@ -3,36 +3,15 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use consts::{
-    BLOCK_BORDER_COLOR, BLOCK_BORDER_WIDTH, BLOCK_COLOR_UNUSED, BLOCK_COLOR_USED, GRID_SIZE,
-    LOOP_DELAY_MS,
-};
-use game::{Direction, Snake, key_to_direction};
 use log::info;
-use slint::{ModelRc, SharedString, VecModel};
+use rand::Rng;
+use slint::SharedString;
+use snake_lib::{consts::LOOP_DELAY_MS, game::{key_to_direction, Direction, Snake}, get_snake_app_window};
+use slint::ComponentHandle;
 
-slint::include_modules!();
-
-pub mod consts;
-pub mod game;
-pub mod grid;
-
-pub fn get_snake_app_window() -> AppWindow {
-    let ui = AppWindow::new().unwrap();
-    ui.global::<GameAdapter>().set_grid_size(GRID_SIZE);
-
-    // Set grid structure
-    ui.set_block_color_all(BLOCK_COLOR_UNUSED);
-
-    ui.global::<GameAdapter>()
-        .set_block_border_width(BLOCK_BORDER_WIDTH);
-    ui.global::<GameAdapter>()
-        .set_block_border_color(BLOCK_BORDER_COLOR);
-
-    ui.global::<GameAdapter>().set_overlay_text("".into());
-    ui.global::<GameAdapter>().set_overlay_visible(false);
-
-    ui
+fn get_random_u64() -> u64 {
+    let mut r = rand::rng();
+    r.random::<u64>()
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -47,7 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let ui_weak = ui.as_weak();
 
     std::thread::spawn(move || {
-        let snake = Arc::new(Mutex::new(Snake::new()));
+        let snake = Arc::new(Mutex::new(Snake::new(get_random_u64)));
         let dir = Arc::new(Mutex::new(Direction::None));
         loop {
             // info!("Dir: {:?}", dir);

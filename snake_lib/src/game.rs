@@ -1,9 +1,15 @@
 use log::info;
-use rand::Rng;
-use slint::{platform::Key, ComponentHandle, SharedString};
+use rand::RngCore;
+use rand::SeedableRng;
+use slint::{ComponentHandle, SharedString, platform::Key};
+
+use alloc::format;
+use alloc::vec;
+use alloc::vec::Vec;
 
 use crate::{
-    consts::{BLOCK_COLOR_UNUSED, BLOCK_COLOR_USED, GRID_SIZE}, AppWindow, GameAdapter
+    AppWindow, GameAdapter,
+    consts::{BLOCK_COLOR_UNUSED, BLOCK_COLOR_USED, GRID_SIZE},
 };
 
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
@@ -21,10 +27,11 @@ pub struct Snake {
     body: Vec<SnakePart>,
     ball: Ball,
     end_game: bool,
+    platform_random: Option<fn() -> u64>,
 }
 
 impl Snake {
-    pub fn new() -> Self {
+    pub fn new(platform_random: fn() -> u64) -> Self {
         let mut snake = Snake::default();
         // Head
         let mut snake_head = SnakePart::default();
@@ -38,6 +45,8 @@ impl Snake {
         snake_part_first.y = (GRID_SIZE.height / 2) as usize - 1;
         snake_part_first.dir = Direction::Right;
         snake.body.push(snake_part_first);
+        // Platform random - before ball
+        snake.platform_random = Some(platform_random);
         // Ball
         snake.random_ball_location();
         // Endgame
@@ -50,7 +59,7 @@ impl Snake {
 
         if self.end_game {
             if *dir_arg != Direction::None {
-                *self = Snake::new();
+                *self = Snake::new(self.platform_random.unwrap());
             }
             return;
         }
@@ -134,7 +143,8 @@ impl Snake {
         }
         ui.set_block_color(self.ball.x, self.ball.y, BLOCK_COLOR_USED);
         if self.end_game {
-            ui.global::<GameAdapter>().set_overlay_text(format!("Score: {}", self.body.len() - 2).into());
+            ui.global::<GameAdapter>()
+                .set_overlay_text(format!("Score: {}", self.body.len() - 2).into());
             ui.global::<GameAdapter>().set_overlay_visible(true);
         } else {
             ui.global::<GameAdapter>().set_overlay_visible(false);
@@ -142,10 +152,11 @@ impl Snake {
     }
 
     pub fn random_ball_location(&mut self) {
-        let mut rng = rand::rng();
         loop {
-            self.ball.x = rng.random_range(0..GRID_SIZE.width) as usize;
-            self.ball.y = rng.random_range(0..GRID_SIZE.height) as usize;
+            self.ball.x =
+                rand_range(0, GRID_SIZE.width as u32, self.platform_random.unwrap()) as usize;
+            self.ball.y =
+                rand_range(0, GRID_SIZE.height as u32, self.platform_random.unwrap()) as usize;
             let mut fine = true;
             for part in &self.body {
                 if self.ball.x == part.x || self.ball.y == part.y {
@@ -186,4 +197,18 @@ pub fn key_to_direction(key: SharedString) -> Direction {
         return Direction::Up;
     }
     Direction::None
+}
+
+pub fn rand_range(min: u32, max: u32, platform_random: fn() -> u64) -> u32 {
+    if min >= max {
+        info!("min must be less than max");
+        return 0;
+    }
+
+    min + (get_random(platform_random) % (max - min))
+}
+
+fn get_random(platform_random: fn() -> u64) -> u32 {
+    let mut rng = rand::rngs::SmallRng::seed_from_u64(platform_random());
+    rng.next_u32()
 }

@@ -1,0 +1,12 @@
+[package]
+name = "snake_lib"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+slint = { version = "1.8.0", default-features = false }
+log = "0.4"
+rand = { version = "0.9.1", default-features = false, features = ["small_rng"]}
+
+[build-dependencies]
+slint-build = "1.8.0"
