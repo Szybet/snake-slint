@@ -152,20 +152,32 @@ impl Snake {
     }
 
     pub fn random_ball_location(&mut self) {
+        // info!("&self.body is: {:#?}", &self.body);
+        // let mut c = 0;
         loop {
             self.ball.x =
                 rand_range(0, GRID_SIZE.width as u32, self.platform_random.unwrap()) as usize;
             self.ball.y =
                 rand_range(0, GRID_SIZE.height as u32, self.platform_random.unwrap()) as usize;
+
+            // info!("Iterating random: {}x{}", self.ball.x, self.ball.y);
+
             let mut fine = true;
             for part in &self.body {
-                if self.ball.x == part.x || self.ball.y == part.y {
+                if self.ball.x == part.x && self.ball.y == part.y {
                     fine = false;
+                    info!("Matched! for part: {}x{}", part.x, part.y);
+                    break;
                 }
             }
             if fine {
                 break;
             }
+
+            // c = c + 1;
+            // if c > 300 {
+                // panic!("Did not found ball location!");
+            //}
         }
     }
 }
