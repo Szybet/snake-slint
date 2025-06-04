@@ -3593,6 +3593,7 @@ dependencies = [
 name = "snake_lib"
 version = "0.1.0"
 dependencies = [
+ "cfg-if",
  "log",
  "rand 0.9.1",
  "slint",
