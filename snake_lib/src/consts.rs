@@ -13,10 +13,10 @@ cfg_if::cfg_if! {
         target = "xtensa-esp32s3-none-elf",
         target = "xtensa-esp32-none-elf"
     ))] {
-        pub const BLOCK_COLOR_UNUSED: Color = Color::from_rgb_u8(0, 153, 51);
-        pub const LOOP_DELAY_MS: u64 = 400;
-    } else {
         pub const BLOCK_COLOR_UNUSED: Color = Color::from_rgb_u8(255, 255, 255);
         pub const LOOP_DELAY_MS: u64 = 50;
+    } else {
+        pub const BLOCK_COLOR_UNUSED: Color = Color::from_rgb_u8(0, 153, 51);
+        pub const LOOP_DELAY_MS: u64 = 400;
     }
 }
