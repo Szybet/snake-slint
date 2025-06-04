@@ -49,17 +49,17 @@ export component AppWindow inherits Window {
     Rectangle {
         visible: GameAdapter.overlay_visible;
         background: rgb(0, 0, 0);
-        width: parent.width * 0.2;
-        height: parent.height * 0.05;
+        width: root.width * 0.65;
+        height: root.height * 0.2;
         padding: 8px;
-        border-radius: 5px;
+        border-radius: root.height * 0.04;
         Text {
             visible: GameAdapter.overlay_visible;
             text: GameAdapter.overlay_text;
             horizontal-alignment: center;
             vertical-alignment: center;
             color: white;
-            font-size: parent.height * 0.3;
+            font-size: (parent.height) * 0.6;
         }
     }
 }
