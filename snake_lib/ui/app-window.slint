@@ -1,5 +1,4 @@
 import { Button, VerticalBox , AboutSlint } from "std-widgets.slint";
-import "./NotoSans-Regular.ttf";
 
 struct Size {
     width: int,
@@ -31,8 +30,6 @@ component GridBlockDisplay inherits VerticalLayout {
 }
 
 export component AppWindow inherits Window {
-    default-font-family: "Noto Sans";
-    
     callback key_pressed(string);
     forward-focus: my-key-handler;
     my-key-handler := FocusScope {
