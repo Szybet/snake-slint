@@ -7,6 +7,7 @@ edition = "2024"
 slint = { version = "1.8.0", default-features = false }
 log = "0.4"
 rand = { version = "0.9.1", default-features = false, features = ["small_rng"]}
+cfg-if = "1.0"
 
 [build-dependencies]
 slint-build = "1.8.0"
