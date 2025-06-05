@@ -10,4 +10,4 @@ rand = { version = "0.9.1", default-features = false, features = ["small_rng"]}
 cfg-if = "1.0"
 
 [build-dependencies]
-slint-build = "1.8.0"
+slint-build = { version = "1.8.0", features = ["sdf-fonts"] }

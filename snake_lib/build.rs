@@ -3,7 +3,8 @@ fn main() {
         "ui/app-window.slint",
         slint_build::CompilerConfiguration::new()
             .with_style("fluent-dark".to_owned())
-            .embed_resources(slint_build::EmbedResourcesKind::EmbedForSoftwareRenderer),
+            .embed_resources(slint_build::EmbedResourcesKind::EmbedForSoftwareRenderer)
+            .with_sdf_fonts(true),
     )
     .unwrap();
 }
