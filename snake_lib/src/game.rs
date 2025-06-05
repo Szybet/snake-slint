@@ -1,10 +1,10 @@
+use alloc::vec::Vec;
 use log::info;
 use rand::RngCore;
 use rand::SeedableRng;
 use slint::{ComponentHandle, SharedString};
 
 use alloc::format;
-use alloc::vec::Vec;
 
 use crate::{
     AppWindow, GameAdapter,
@@ -32,6 +32,7 @@ pub struct Snake {
 impl Snake {
     pub fn new(platform_random: fn() -> u64) -> Self {
         let mut snake = Snake::default();
+        snake.body.reserve((GRID_SIZE.width * GRID_SIZE.height) as usize);
         // Head
         let mut snake_head = SnakePart::default();
         snake_head.x = (GRID_SIZE.width / 2) as usize;
@@ -68,13 +69,13 @@ impl Snake {
         *dir_arg = Direction::None;
 
         // Calculate new head direction without holding mutable reference
-        let current_dir = self.body[0].dir.clone();
+        let current_dir = &self.body[0].dir;
         let new_dir = match dir {
             Direction::Up if !matches!(current_dir, Direction::Down) => Direction::Up,
             Direction::Down if !matches!(current_dir, Direction::Up) => Direction::Down,
             Direction::Left if !matches!(current_dir, Direction::Right) => Direction::Left,
             Direction::Right if !matches!(current_dir, Direction::Left) => Direction::Right,
-            _ => current_dir,
+            _ => *current_dir,
         };
 
         // Calculate new head position
@@ -124,11 +125,11 @@ impl Snake {
 
         // Check ball collision
         if self.body[0].x == self.ball.x && self.body[0].y == self.ball.y {
-            if let Some(last) = self.body.last() {
+            if let Some(last) = self.body.iter().last() {
                 self.body.push(SnakePart {
                     x: last.x,
                     y: last.y,
-                    dir: last.dir.clone(),
+                    dir: last.dir,
                 });
             }
             self.random_ball_location();
