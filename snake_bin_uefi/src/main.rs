@@ -5,10 +5,7 @@
 extern crate alloc;
 
 use alloc::boxed::Box;
-use alloc::format;
 use alloc::rc::Rc;
-use alloc::string::{String, ToString};
-use alloc::sync::Arc;
 use alloc::vec;
 use snake_lib::consts::LOOP_DELAY_MS;
 use snake_lib::game::{key_to_direction, Direction, Snake};
@@ -303,7 +300,6 @@ impl slint::platform::Platform for Platform {
         let mouse_mode = conpointer.mode();
         let mut is_mouse_move = false;
         
-        let mut c = 0;
         loop {
             slint::platform::update_timers_and_animations();
 

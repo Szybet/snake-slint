@@ -1,16 +1,9 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::vec;
-use alloc::format;
-
 use consts::{
-    BLOCK_BORDER_COLOR, BLOCK_BORDER_WIDTH, BLOCK_COLOR_UNUSED, BLOCK_COLOR_USED, GRID_SIZE,
-    LOOP_DELAY_MS,
+    BLOCK_BORDER_COLOR, BLOCK_BORDER_WIDTH, BLOCK_COLOR_UNUSED, GRID_SIZE,
 };
-use game::{Direction, Snake, key_to_direction};
-use log::info;
-use slint::{ModelRc, SharedString, VecModel};
 
 slint::include_modules!();
 

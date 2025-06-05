@@ -1,10 +1,9 @@
 use log::info;
 use rand::RngCore;
 use rand::SeedableRng;
-use slint::{ComponentHandle, SharedString, platform::Key};
+use slint::{ComponentHandle, SharedString};
 
 use alloc::format;
-use alloc::vec;
 use alloc::vec::Vec;
 
 use crate::{
