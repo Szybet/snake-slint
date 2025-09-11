@@ -4,13 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-slint = { version = "1.8.0", default-features = false }
+slint = { version = "1.13.0", default-features = false }
 log = "0.4"
 rand = { version = "0.9.1", default-features = false, features = ["small_rng"]}
 cfg-if = "1.0"
 
 [build-dependencies]
-slint-build = { version = "1.8.0", features = ["sdf-fonts"] }
+slint-build = { version = "1.13.0", features = ["sdf-fonts"] }
 
 [profile.release]
 strip = true

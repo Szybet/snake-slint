@@ -6,9 +6,9 @@ edition = "2024"
 [dependencies]
 uefi = { version = "0.33", features = ["panic_handler", "global_allocator"] }
 minipng = "=0.1.1"
-slint = { version = "1.8.0", default-features = false, features = ["compat-1-2", "renderer-software", "libm", "log", "unsafe-single-threaded"] }
+slint = { version = "1.13.0", default-features = false, features = ["compat-1-2", "renderer-software", "libm", "log", "unsafe-single-threaded"] }
 log = "0.4"
 snake_lib = { path = "../snake_lib/" }
 
 [build-dependencies]
-slint = { version = "1.8.0", default-features = false, features = ["compat-1-2", "renderer-software", "libm", "log", "unsafe-single-threaded"] }
+slint = { version = "1.13.0", default-features = false, features = ["compat-1-2", "renderer-software", "libm", "log", "unsafe-single-threaded"] }
