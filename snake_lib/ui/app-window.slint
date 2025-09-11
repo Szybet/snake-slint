@@ -1,5 +1,7 @@
 import { Button, VerticalBox , AboutSlint } from "std-widgets.slint";
 
+import "./Quantico-Regular-linegap5.ttf";
+
 struct Size {
     width: int,
     height: int}
@@ -30,6 +32,8 @@ component GridBlockDisplay inherits VerticalLayout {
 }
 
 export component AppWindow inherits Window {
+    default-font-family: "Quantico";
+
     callback key_pressed(string);
     forward-focus: my-key-handler;
     my-key-handler := FocusScope {
